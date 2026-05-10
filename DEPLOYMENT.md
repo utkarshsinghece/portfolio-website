@@ -51,7 +51,7 @@ In Cloudflare Pages dashboard, go to your project → Settings → Environment v
 
 ```
 VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+VITE_SUPABASE_PUBLISHABLE_KEY1=your_supabase_publishable_key
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
