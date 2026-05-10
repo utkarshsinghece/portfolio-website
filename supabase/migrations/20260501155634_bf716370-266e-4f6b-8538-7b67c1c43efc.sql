@@ -1,0 +1,1 @@
+ALTER TABLE public.experience ADD COLUMN IF NOT EXISTS tech_stack jsonb NOT NULL DEFAULT '[]'::jsonb;
