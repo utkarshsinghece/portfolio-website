@@ -38,6 +38,8 @@ git push -u origin main
    Build output directory: .output/public
    Root directory: /
    ```
+   
+   **Important:** Use `npm run build` instead of bun to avoid lockfile version conflicts with Cloudflare's Bun version.
 8. Click **"Save and Deploy"**
 
 ### Step 4: Set Environment Variables
