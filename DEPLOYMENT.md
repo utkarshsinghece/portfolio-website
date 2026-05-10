@@ -39,7 +39,10 @@ git push -u origin main
    Root directory: /
    ```
    
-   **Important:** Use `npm run build` instead of bun to avoid lockfile version conflicts with Cloudflare's Bun version.
+   **Important:** 
+   - Use `npm run build` instead of bun to avoid lockfile version conflicts
+   - Cloudflare Pages will automatically deploy the build output
+   - No need for Wrangler configuration with Pages
 8. Click **"Save and Deploy"**
 
 ### Step 4: Set Environment Variables
