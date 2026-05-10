@@ -1,15 +1,13 @@
-import { Link } from "@tanstack/react-router";
-
 export function Nav({ showHireMe = false }: { showHireMe?: boolean }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 sm:pt-5">
         <nav className="glass flex items-center justify-between rounded-full px-4 py-2.5 sm:px-6">
-          <Link to="/" className="flex items-center gap-2 group">
+          <a href="/" className="flex items-center gap-2 group">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-foreground text-background font-display font-bold">
               U
             </span>
-          </Link>
+          </a>
 
           <div className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition">About</a>

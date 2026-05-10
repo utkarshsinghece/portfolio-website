@@ -1,7 +1,6 @@
 import { Mail, Phone, MapPin, Send, Loader2, LogIn, LogOut, Shield } from "lucide-react";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,18 +12,18 @@ function FooterAdminLink() {
     <span className="flex items-center gap-2">
       <span className="opacity-50">·</span>
       {isAdmin && (
-        <Link to="/admin" className="inline-flex items-center gap-1 hover:text-foreground transition">
+        <a href="/admin" className="inline-flex items-center gap-1 hover:text-foreground transition">
           <Shield className="h-3 w-3" /> admin panel
-        </Link>
+        </a>
       )}
       {user ? (
         <button onClick={signOut} className="inline-flex items-center gap-1 hover:text-foreground transition">
           <LogOut className="h-3 w-3" /> sign out
         </button>
       ) : (
-        <Link to="/auth" className="inline-flex items-center gap-1 hover:text-foreground transition">
+        <a href="/auth" className="inline-flex items-center gap-1 hover:text-foreground transition">
           <LogIn className="h-3 w-3" /> login as admin
-        </Link>
+        </a>
       )}
     </span>
   );
