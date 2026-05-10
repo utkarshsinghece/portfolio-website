@@ -30,33 +30,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(s?.user ?? null);
       if (s?.user) {
         setTimeout(async () => {
-          const { data } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", s.user.id)
-            .eq("role", "admin")
-            .maybeSingle();
-          setIsAdmin(!!data);
+          try {
+            const { data } = await supabase
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", s.user.id)
+              .eq("role", "admin")
+              .maybeSingle();
+            setIsAdmin(!!data);
+          } catch (error) {
+            console.error("Error checking admin role:", error);
+            setIsAdmin(false);
+          }
         }, 0);
       } else {
         setIsAdmin(false);
       }
     });
 
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      setUser(s?.user ?? null);
-      setLoading(false);
-      if (s?.user) {
-        supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", s.user.id)
-          .eq("role", "admin")
-          .maybeSingle()
-          .then(({ data }) => setIsAdmin(!!data));
+    const initializeAuth = async () => {
+      try {
+        const { data: { session: s } } = await supabase.auth.getSession();
+        setSession(s);
+        setUser(s?.user ?? null);
+        setLoading(false);
+        if (s?.user) {
+          try {
+            const { data } = await supabase
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", s.user.id)
+              .eq("role", "admin")
+              .maybeSingle();
+            setIsAdmin(!!data);
+          } catch {
+            setIsAdmin(false);
+          }
+        }
+      } catch {
+        setLoading(false);
       }
-    });
+    };
+
+    initializeAuth();
 
     return () => sub.subscription.unsubscribe();
   }, []);

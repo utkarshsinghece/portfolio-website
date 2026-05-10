@@ -45,26 +45,69 @@ function Index() {
   const preview = isPreviewUrl() && isAdmin;
 
   useEffect(() => {
-    supabase
-      .from("profile")
-      .select("*")
-      .eq("id", 1)
-      .maybeSingle()
-      .then(({ data }) => {
+    const loadProfile = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("profile")
+          .select("*")
+          .eq("id", 1)
+          .maybeSingle();
+        if (error) throw error;
         if (!data) return;
         setProfile(preview ? mergeDraft(data as Draftable<ProfileRow>) : (data as ProfileRow));
-      });
+      } catch (error) {
+        console.error("Error loading profile:", error);
+        // Set fallback data if Supabase fails
+        setProfile({
+          name: "Utkarsh Singh",
+          title: "Senior Data Engineer",
+          tagline: "Building scalable data pipelines",
+          about: "Experienced data engineer with expertise in Spark, Kafka, and cloud technologies.",
+          email: "sutkarsh28@gmail.com",
+          phone: "+1-234-567-8900",
+          location: "San Francisco, CA",
+          linkedin: null,
+          github: null,
+          instagram: null,
+          youtube: null,
+          twitter: null,
+          website: null,
+          availability: "Available for opportunities",
+          stats: [
+            { value: "4+", label: "Years experience" },
+            { value: "$600M+", label: "Revenue powered" },
+            { value: "90%", label: "Faster pipelines" },
+            { value: "200+", label: "Teams enabled" }
+          ],
+          show_hire_me: false,
+          show_resume: false,
+          show_email: false,
+          show_phone: false
+        });
+      }
+    };
 
-    let expQ = supabase.from("experience").select("*").order("sort_order", { ascending: true });
-    if (!preview) expQ = expQ.eq("is_published", true);
-    expQ.then(({ data }) => {
-      if (!data) return;
-      setExp(
-        preview
-          ? (previewList(data as unknown as Draftable<ExpItem>[]) as unknown as ExpItem[])
-          : (data as unknown as ExpItem[]),
-      );
-    });
+    const loadExperience = async () => {
+      try {
+        let expQ = supabase.from("experience").select("*").order("sort_order", { ascending: true });
+        if (!preview) expQ = expQ.eq("is_published", true);
+        const { data, error } = await expQ;
+        if (error) throw error;
+        if (!data) return;
+        setExp(
+          preview
+            ? (previewList(data as unknown as Draftable<ExpItem>[]) as unknown as ExpItem[])
+            : (data as unknown as ExpItem[]),
+        );
+      } catch (error) {
+        console.error("Error loading experience:", error);
+        // Set empty experience if Supabase fails
+        setExp([]);
+      }
+    };
+
+    loadProfile();
+    loadExperience();
   }, [preview]);
 
   if (!profile) {
